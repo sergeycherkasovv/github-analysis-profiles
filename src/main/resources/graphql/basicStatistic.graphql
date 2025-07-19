@@ -1,0 +1,21 @@
+query ($login: String!) {
+  user(login: $login) {
+    url
+    name
+    email
+    createdAt
+
+    starredRepositories { totalCount }
+
+    totalRepositories: repositories(first: 100, ownerAffiliations: OWNER)  {
+      totalCount
+      nodes {
+        forkCount
+        stargazerCount
+      }
+    }
+
+    followers { totalCount }
+    following { totalCount }
+  }
+}
