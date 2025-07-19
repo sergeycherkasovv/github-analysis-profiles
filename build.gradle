@@ -1,13 +1,13 @@
 plugins {
-	id 'application'
-	id 'checkstyle'
-	id "io.freefair.lombok" version "8.13.1"
-	id 'org.springframework.boot' version '3.5.3'
-	id 'io.spring.dependency-management' version '1.1.7'
+	id("application")
+	id("checkstyle")
+	id("io.freefair.lombok") version "8.13.1"
+	id("org.springframework.boot") version "3.5.3"
+	id("io.spring.dependency-management") version "1.1.7"
 }
 
-group = 'telegramm.bot'
-version = '0.0.1-SNAPSHOT'
+group = "telegram.bot"
+version = "0.0.1-SNAPSHOT"
 
 java {
 	toolchain {
@@ -21,20 +21,21 @@ repositories {
 
 dependencies {
 	// Spring Boot
-	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-devtools")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
 	// Telegram
-	//implementation("org.telegram:telegrambots-client:8.3.0")
-	//implementation("org.telegram:telegrambots-springboot-longpolling-starter:8.3.0")
-	implementation("org.telegram:telegrambots:6.9.7.1")
+	implementation("org.telegram:telegrambots-client:8.3.0")
+	implementation("org.telegram:telegrambots-springboot-longpolling-starter:8.3.0")
 
 	// Tests
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.named('test') {
+tasks.named("test") {
 	useJUnitPlatform()
 }
