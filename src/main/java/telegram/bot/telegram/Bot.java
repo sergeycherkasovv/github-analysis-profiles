@@ -2,35 +2,25 @@ package telegram.bot.telegram;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.TelegramWebhookBot;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import telegram.bot.properties.TelegramProperties;
+import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
+import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
+import telegram.bot.component.TelegramProperties;
 import telegram.bot.services.UpdateService;
 
 @Component
-public class Bot extends TelegramWebhookBot {
+@AllArgsConstructor
+public class Bot implements SpringLongPollingBot {
     private final TelegramProperties telegramProperties;
     private final UpdateService updateService;
 
-    Bot(TelegramProperties telegramProperties, UpdateService updateService) {
-        super(telegramProperties.getToken());
-        this.telegramProperties = telegramProperties;
-        this.updateService = updateService;
+
+    @Override
+    public String getBotToken() {
+        return telegramProperties.getToken();
     }
 
     @Override
-    public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        return updateService.distribute(update, this);
-    }
-
-    @Override
-    public String getBotPath() {
-        return null;
-    }
-
-    @Override
-    public String getBotUsername() {
-        return null;
+    public LongPollingUpdateConsumer getUpdatesConsumer() {
+        return updateService;
     }
 }
