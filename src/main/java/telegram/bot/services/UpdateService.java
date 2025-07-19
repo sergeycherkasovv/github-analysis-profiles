@@ -14,7 +14,9 @@ import telegram.bot.message.StatisticMessage;
 import telegram.bot.util.MarkdownV2Util;
 
 import static telegram.bot.enums.CommandName.START;
-import static telegram.bot.enums.Message.*;
+import static telegram.bot.enums.Message.EXCEPTION;
+import static telegram.bot.enums.Message.NOT_COMMAND;
+import static telegram.bot.enums.Message.START_MESSAGE;
 
 
 @Component

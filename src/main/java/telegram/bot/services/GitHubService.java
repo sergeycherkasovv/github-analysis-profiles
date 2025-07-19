@@ -24,12 +24,11 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class GitHubService {
+    private static final int TIMEOUT = 10;
     private final WebClient gitHubWebClientConfig;
     private final ContributeStatisticService contributeService;
     private final GraphQlReader graphQlReader;
     private final BasicStatisticService basicStatisticService;
-
-    private final int TIMEOUT = 10;
 
     public Mono<BasicStatistic> fetchBasicStatistic(String username) {
         var query = graphQlReader.reading("basicStatistic");
@@ -87,11 +86,11 @@ public class GitHubService {
     private Mono<ContributeStatistic> fetchContributionsForYear(String username, int year) {
         var query = graphQlReader.reading("contributionsStatistic");
         var from = ZonedDateTime
-                .of(year,1,1,0,0,0,0, ZoneOffset.UTC)
+                .of(year, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
                 .toInstant()
                 .toString();
         var to = ZonedDateTime
-                .of(year,12,31,23,59,59,999_999_999, ZoneOffset.UTC)
+                .of(year, 12, 31, 23, 59, 59, 999_999_999, ZoneOffset.UTC)
                 .toInstant()
                 .toString();
 

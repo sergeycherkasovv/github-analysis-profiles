@@ -23,18 +23,19 @@ public class StatisticMessage {
         var fullName = markdownV2Util.escapeMarkdownV2(basicProfileStatistic.getUser().getFullname());
 
         return """
+         👤
          ***Profile:*** [%s](%s)
          ***FullName:*** %s
          ***Email:*** %s
          ***Created at:*** %s
-         
+         📊
          ***Public Repositories:*** %d
          ***Commits:*** %d
          ***Forks:*** %d
          ***Issues:*** %d
          ***Pull Requests:*** %d
          ***Code Reviews:*** %d
-         
+         ⭐
          ***Followers:*** %d
          ***Following:*** %d
          ***Stars:*** %d

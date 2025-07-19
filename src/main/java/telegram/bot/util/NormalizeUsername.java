@@ -7,12 +7,12 @@ import java.net.URISyntaxException;
 
 @Component
 public class NormalizeUsername {
-    public String normalized (String username) {
+    public String normalized(String username) {
         if (username == null || username.isBlank()) {
             return "";
         }
 
-        if(username.startsWith("@")) {
+        if (username.startsWith("@")) {
             return username.substring(1);
         }
 
@@ -21,7 +21,7 @@ public class NormalizeUsername {
                 var uri = new URI(username);
                 var path = uri.getPath();
 
-                if(path != null && path.length() > 1) {
+                if (path != null && path.length() > 1) {
                     var segments = path.split("/");
                     return segments[1];
                 }
