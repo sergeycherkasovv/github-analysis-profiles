@@ -32,7 +32,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
-	implementation 'com.graphql-java:graphql-java:20.0'
+	implementation("com.graphql-java:graphql-java:20.0")
 
 	// Telegram
 	implementation("org.telegram:telegrambots-client:8.3.0")
@@ -46,11 +46,15 @@ dependencies {
 	testImplementation("org.junit.jupiter:junit-jupiter:5.11.1")
 }
 
-tasks.named("test") {
+tasks.test {
 	useJUnitPlatform()
 	testLogging {
 		exceptionFormat = TestExceptionFormat.FULL
-		events = [TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED]
+		events = setOf(
+			TestLogEvent.FAILED,
+			TestLogEvent.PASSED,
+			TestLogEvent.SKIPPED
+		)
 		showStandardStreams = true
 	}
 }
@@ -63,8 +67,8 @@ tasks.jacocoTestReport {
 
 sonar {
 	properties {
-		property "sonar.projectKey", "sergeycherkasovv_github-profile-analyzer"
-		property "sonar.organization", "sergeycherkasovv"
-		property "sonar.host.url", "https://sonarcloud.io"
+		property("sonar.projectKey", "sergeycherkasovv_github-profile-analyzer")
+		property("sonar.organization", "sergeycherkasovv")
+		property("sonar.host.url", "https://sonarcloud.io")
 	}
 }
