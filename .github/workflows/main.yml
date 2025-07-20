@@ -40,6 +40,8 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Run tests and generate Jacoco report
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         run: ./gradlew test jacocoTestReport --no-daemon
 
       - name: Build and SonarQube analyze
