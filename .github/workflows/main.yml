@@ -7,8 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -25,6 +23,8 @@ jobs:
 
       - name: Cache SonarQube packages
         uses: actions/cache@v4
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
@@ -32,6 +32,8 @@ jobs:
 
       - name: Cache Gradle packages
         uses: actions/cache@v4
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
@@ -43,4 +45,5 @@ jobs:
       - name: Build and SonarQube analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         run: ./gradlew build sonar --info
