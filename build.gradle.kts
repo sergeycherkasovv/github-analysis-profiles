@@ -2,9 +2,9 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-	id("application")
-	id("checkstyle")
-	id("jacoco")
+	application
+	checkstyle
+	jacoco
 	id("org.sonarqube") version "6.2.0.5505"
 	id("io.freefair.lombok") version "8.13.1"
 	id("org.springframework.boot") version "3.5.3"
