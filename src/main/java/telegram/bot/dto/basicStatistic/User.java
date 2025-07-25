@@ -3,24 +3,28 @@ package telegram.bot.dto.basicStatistic;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Locale;
+
+import static telegram.bot.enums.Message.NOT_PUBLIC;
 
 @Getter
 @Setter
 public class User {
-    private String fullname;
+    private String fullName;
     private String email;
-    private Date createdAt;
-    private URL profileURL;
+    private String createdAt;
+    private String profileURL;
 
 
     public String getCreatedAt() {
-        var formatter = new SimpleDateFormat("dd MMMMMMMM yyyy");
-        if (this.createdAt == null) {
-            return null;
+        try {
+            var instant = java.time.Instant.parse(this.createdAt);
+            var date = java.util.Date.from(instant);
+            var formatter = new SimpleDateFormat("dd MMMMMMMM yyyy", Locale.ENGLISH);
+            return formatter.format(date);
+        } catch (Exception e) {
+            return NOT_PUBLIC.getMessage();
         }
-        return formatter.format(createdAt);
     }
 }
