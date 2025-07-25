@@ -1,0 +1,18 @@
+{
+  "totalRepositories": {
+    "totalCount": 25,
+    "nodes": [
+      {
+        "forkCount": 10,
+        "stargazerCount": 3
+      },
+      {
+        "forkCount": 5,
+        "stargazerCount": 2
+      }
+    ]
+  },
+  "starredRepositories": {
+    "totalCount": 1
+  }
+}
