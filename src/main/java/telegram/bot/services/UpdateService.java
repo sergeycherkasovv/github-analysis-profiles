@@ -40,9 +40,11 @@ public class UpdateService implements LongPollingSingleThreadUpdateConsumer {
                 var message = updates.getMessage().getText();
 
                 try {
-                    telegramClient.execute(getMessage(chatId, messageService.generateMessage(message, gitHubService)));
+                    telegramClient.execute(getMessage(chatId, messageService
+                                                                .generateMessage(message, gitHubService)));
                 } catch (GitHubAPIException ex) {
-                    telegramClient.execute(getMessage(chatId, markdownV2Util.escapeMarkdownV2(ERROR_MESSAGE.getMessage())));
+                    telegramClient.execute(getMessage(chatId, markdownV2Util
+                                                                .escapeMarkdownV2(ERROR_MESSAGE.getMessage())));
                 }
 
             }
