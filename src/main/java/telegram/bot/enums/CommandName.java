@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum CommandName {
-    START("/start");
+    START("/start"),
+    THERE_IS_NO_SUCH_COMMAND("/.*");
 
-    private final String commandName;
+    private final String message;
 }
