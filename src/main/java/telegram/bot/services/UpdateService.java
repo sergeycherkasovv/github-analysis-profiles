@@ -10,54 +10,42 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 import telegram.bot.exception.GitHubAPIException;
 import telegram.bot.component.TelegramProperties;
-import telegram.bot.message.StatisticMessage;
 import telegram.bot.util.MarkdownV2Util;
 
-import static telegram.bot.enums.CommandName.START;
-import static telegram.bot.enums.Message.EXCEPTION;
-import static telegram.bot.enums.Message.NOT_COMMAND;
-import static telegram.bot.enums.Message.START_MESSAGE;
-
+import static telegram.bot.enums.Message.ERROR_MESSAGE;
 
 @Component
 public class UpdateService implements LongPollingSingleThreadUpdateConsumer {
-    private final StatisticMessage statisticMessage;
     private final TelegramClient telegramClient;
     private final MarkdownV2Util markdownV2Util;
+    private final MessageService messageService;
+    private final GitHubService gitHubService;
 
     UpdateService(TelegramProperties telegramProperties,
-                  StatisticMessage statisticMessage,
-                  MarkdownV2Util markdownV2Util) {
+                  MarkdownV2Util markdownV2Util,
+                  MessageService messageService,
+                  GitHubService gitHubService) {
+        this.gitHubService = gitHubService;
+        this.messageService = messageService;
         this.markdownV2Util = markdownV2Util;
-        this.statisticMessage = statisticMessage;
         this.telegramClient = new OkHttpTelegramClient(telegramProperties.getToken());
     }
-
 
     @SneakyThrows
     @Override
     public void consume(Update updates) {
-        SendMessage text = null;
 
-        try {
             if (updates.hasMessage()) {
                 var chatId = updates.getMessage().getChatId();
                 var message = updates.getMessage().getText();
-                if (START.getCommandName().equals(message)) {
-                    text = getMessage(chatId, markdownV2Util.escapeMarkdownV2(START_MESSAGE.getMessage()));
-                } else if (message.matches("/.*")) {
-                    text = getMessage(chatId, markdownV2Util.escapeMarkdownV2(NOT_COMMAND.getMessage()));
-                } else {
-                    text = getMessage(chatId, statisticMessage.getMessage(message));
+
+                try {
+                    telegramClient.execute(getMessage(chatId, messageService.generateMessage(message, gitHubService)));
+                } catch (GitHubAPIException ex) {
+                    telegramClient.execute(getMessage(chatId, markdownV2Util.escapeMarkdownV2(ERROR_MESSAGE.getMessage())));
                 }
+
             }
-        } catch (GitHubAPIException ex) {
-            var chatId = updates.getMessage().getChatId();
-
-            text = getMessage(chatId, markdownV2Util.escapeMarkdownV2(EXCEPTION.getMessage()));
-        }
-
-        telegramClient.execute(text);
     }
 
     private SendMessage getMessage(Long chatId, String message) {
