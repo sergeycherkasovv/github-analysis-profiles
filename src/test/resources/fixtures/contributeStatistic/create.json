@@ -1,0 +1,12 @@
+{
+  "data": {
+    "user": {
+      "contributionsCollection": {
+        "totalCommitContributions": 25,
+        "totalIssueContributions": 25,
+        "totalPullRequestContributions": 25,
+        "totalPullRequestReviewContributions": 25
+      }
+    }
+  }
+}
