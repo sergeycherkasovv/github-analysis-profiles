@@ -7,8 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Message {
     NOT_PUBLIC("not public"),
-    NOT_COMMAND("\uD83E\uDD14 Hmm, I don’t recognize that command. Maybe you wanted to type '/start'"),
-    EXCEPTION("\uD83D\uDE2E Oops, something went wrong. Please try again."),
+    NO_COMMAND("\uD83E\uDD14 Hmm, I don’t recognize that command. Maybe you wanted to type /start"),
+    ERROR_MESSAGE("\uD83D\uDE2E Oops, something went wrong. Please try again."),
     START_MESSAGE("""
                 Hi! 👋
                 I can show you a quick
@@ -18,7 +18,27 @@ public enum Message {
                 - @username,
                 - https://github.com/username.
                 Ready to give it a try?
-                """);
+                """),
+
+    STATISTIC_MESSAGE("""
+         👤
+         ***Profile:*** [%s](%s)
+         ***FullName:*** %s
+         ***Email:*** %s
+         ***Created:*** %s
+         📊
+         ***Public Repositories:*** %d
+         ***Commits:*** %d
+         ***Forks:*** %d
+         ***Issues:*** %d
+         ***Pull Requests:*** %d
+         ***Code Reviews:*** %d
+         ⭐
+         ***Followers:*** %d
+         ***Following:*** %d
+         ***Stars:*** %d
+         ***Stargazers:*** %d
+         """);
 
     private final String message;
 }
