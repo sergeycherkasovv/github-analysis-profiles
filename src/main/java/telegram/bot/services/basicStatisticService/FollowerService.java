@@ -7,11 +7,11 @@ import telegram.bot.dto.basicStatistic.Follower;
 @Service
 public class FollowerService {
 
-    public Follower createFollower(JsonNode username) {
+    public Follower create(JsonNode usernameGitHub) {
         var follower = new Follower();
 
-        follower.setFollowers(username.path("followers").path("totalCount").asInt(0));
-        follower.setFollowing(username.path("following").path("totalCount").asInt(0));
+        follower.setFollowers(usernameGitHub.path("followers").path("totalCount").asInt(0));
+        follower.setFollowing(usernameGitHub.path("following").path("totalCount").asInt(0));
 
         return follower;
     }

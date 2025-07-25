@@ -14,14 +14,14 @@ public class BasicStatisticService {
     private final MetricsRepositoriesService metricsRepositoriesService;
 
     @SneakyThrows
-    public BasicStatistic createBasicStatistic(JsonNode username) {
+    public BasicStatistic create(JsonNode usernameGitHub) {
         var profile = new BasicStatistic();
 
-        JsonNode user = username.path("data").path("user");
+        JsonNode user = usernameGitHub.path("data").path("user");
 
-        profile.setUser(userService.createUser(user));
-        profile.setFollower(followerService.createFollower(user));
-        profile.setMetricsRepositories(metricsRepositoriesService.createMetricsRepositories(user));
+        profile.setUser(userService.create(user));
+        profile.setFollower(followerService.create(user));
+        profile.setMetricsRepositories(metricsRepositoriesService.create(user));
 
         return profile;
     }

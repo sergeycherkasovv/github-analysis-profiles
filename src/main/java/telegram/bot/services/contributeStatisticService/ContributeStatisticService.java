@@ -6,10 +6,10 @@ import telegram.bot.dto.contributeStatistic.ContributeStatistic;
 
 @Service
 public class ContributeStatisticService {
-    public ContributeStatistic createContributeStatistic(JsonNode username) {
+    public ContributeStatistic create(JsonNode usernameGitHub) {
         var contribute = new ContributeStatistic();
 
-        JsonNode data = username.path("data").path("user").path("contributionsCollection");
+        JsonNode data = usernameGitHub.path("data").path("user").path("contributionsCollection");
 
         contribute.setTotalCommits(data.path("totalCommitContributions").asLong(0));
         contribute.setPullRequest(data.path("totalPullRequestContributions").asLong(0));

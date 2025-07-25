@@ -8,13 +8,13 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class MetricsRepositoriesService {
-    public MetricsRepositories createMetricsRepositories(JsonNode username) {
+    public MetricsRepositories create(JsonNode usernameGitHub) {
         var metricsRepositories = new MetricsRepositories();
 
-        metricsRepositories.setPublicRepos(username.path("totalRepositories").path("totalCount").asInt(0));
-        metricsRepositories.setStarredRepoCount(username.path("starredRepositories").path("totalCount").asInt(0));
+        metricsRepositories.setPublicRepos(usernameGitHub.path("totalRepositories").path("totalCount").asInt(0));
+        metricsRepositories.setStarredRepoCount(usernameGitHub.path("starredRepositories").path("totalCount").asInt(0));
 
-        JsonNode repositoriesNodes = username.path("totalRepositories").path("nodes");
+        JsonNode repositoriesNodes = usernameGitHub.path("totalRepositories").path("nodes");
 
         var forks = repositoriesNodes.isArray()
                     ? StreamSupport
