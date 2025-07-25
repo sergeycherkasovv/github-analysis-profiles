@@ -20,22 +20,27 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Map;
 
+import static telegram.bot.enums.GraphQlFileNames.BASIC_STATISTIC;
+import static telegram.bot.enums.GraphQlFileNames.CONTRIBUTIONS_STATISTIC;
+import static telegram.bot.enums.GraphQlFileNames.CREATED_AT_PROFILE;
+
 @Slf4j
 @Service
 @AllArgsConstructor
 public class GitHubService {
-    private static final int TIMEOUT = 10;
     private final WebClient gitHubWebClientConfig;
     private final ContributeStatisticService contributeService;
     private final GraphQlReader graphQlReader;
     private final BasicStatisticService basicStatisticService;
 
-    public Mono<BasicStatistic> fetchBasicStatistic(String username) {
-        var query = graphQlReader.reading("basicStatistic");
+    private static final int TIMEOUT = 10;
+
+    public BasicStatistic fetchBasicStatistic(String usernameGitHub) {
+        var query = graphQlReader.reading(BASIC_STATISTIC.getMessage());
 
         Map<String, Object> body = Map.of(
                 "query", query,
-                "variables", Map.of("login", username)
+                "variables", Map.of("login", usernameGitHub)
         );
 
         return gitHubWebClientConfig.post()
@@ -43,13 +48,14 @@ public class GitHubService {
                 .retrieve()
                 .bodyToMono(JsonNode.class)
                 .timeout(Duration.ofSeconds(TIMEOUT))
-                .map(basicStatisticService::createBasicStatistic)
+                .map(basicStatisticService::create)
                 .doOnError(error -> log.error("GitHub API Exception: {}", error.getMessage()))
-                .onErrorMap(error -> new GitHubAPIException("GitHub API Exception"));
+                .onErrorMap(error -> new GitHubAPIException(""))
+                .block();
     }
 
-    public Mono<ContributeStatistic> fetchContributeStatistic(String username) {
-        return fetchCreatedAt(username)
+    public ContributeStatistic fetchContributeStatistic(String usernameGitHub) {
+        return fetchCreatedAt(usernameGitHub)
                 .flatMapMany(createdAtStr -> {
                     Instant createdAt = Instant.parse(createdAtStr);
                     var startYear = createdAt.atZone(ZoneOffset.UTC).getYear();
@@ -57,20 +63,21 @@ public class GitHubService {
 
                     return Flux
                             .range(startYear, endYear - startYear + 1)
-                            .flatMap(year -> fetchContributionsForYear(username, year));
+                            .flatMap(year -> fetchContributionsForYear(usernameGitHub, year));
                 })
                 .reduce(new ContributeStatistic(), (acc, current) -> {
                     acc.add(current);
                     return acc;
-                });
+                })
+                .block();
     }
 
-    private Mono<String> fetchCreatedAt(String username) {
-        var query = graphQlReader.reading("createdAtProfile");
+    private Mono<String> fetchCreatedAt(String usernameGitHub) {
+        var query = graphQlReader.reading(CREATED_AT_PROFILE.getMessage());
 
         Map<String, Object> body = Map.of(
                 "query", query,
-                "variables", Map.of("login", username)
+                "variables", Map.of("login", usernameGitHub)
         );
 
         return gitHubWebClientConfig.post()
@@ -80,11 +87,11 @@ public class GitHubService {
                 .timeout(Duration.ofSeconds(TIMEOUT))
                 .map(json -> json.path("data").path("user").path("createdAt").asText())
                 .doOnError(error -> log.error("GitHub API Exception: {}", error.getMessage()))
-                .onErrorMap(error -> new GitHubAPIException("GitHub API Exception"));
+                .onErrorMap(error -> new GitHubAPIException(""));
     }
 
-    private Mono<ContributeStatistic> fetchContributionsForYear(String username, int year) {
-        var query = graphQlReader.reading("contributionsStatistic");
+    private Mono<ContributeStatistic> fetchContributionsForYear(String usernameGitHub, int year) {
+        var query = graphQlReader.reading(CONTRIBUTIONS_STATISTIC.getMessage());
         var from = ZonedDateTime
                 .of(year, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
                 .toInstant()
@@ -95,7 +102,7 @@ public class GitHubService {
                 .toString();
 
         Map<String, Object> variables = Map.of(
-                "login", username,
+                "login", usernameGitHub,
                 "from", from,
                 "to", to
         );
@@ -110,8 +117,8 @@ public class GitHubService {
                 .retrieve()
                 .bodyToMono(JsonNode.class)
                 .timeout(Duration.ofSeconds(TIMEOUT))
-                .map(contributeService::createContributeStatistic)
+                .map(contributeService::create)
                 .doOnError(error -> log.error("GitHub API Exception: {}", error.getMessage()))
-                .onErrorMap(error -> new GitHubAPIException("GitHub API Exception"));
+                .onErrorMap(error -> new GitHubAPIException(""));
     }
 }
