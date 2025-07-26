@@ -18,13 +18,13 @@ public class User {
 
 
     public String getCreatedAt() {
-        try {
+        if (this.createdAt.equals(NOT_PUBLIC.getMessage())) {
+            return NOT_PUBLIC.getMessage();
+        }
             var instant = java.time.Instant.parse(this.createdAt);
             var date = java.util.Date.from(instant);
             var formatter = new SimpleDateFormat("dd MMMMMMMM yyyy", Locale.ENGLISH);
+
             return formatter.format(date);
-        } catch (Exception e) {
-            return NOT_PUBLIC.getMessage();
-        }
     }
 }
