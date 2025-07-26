@@ -61,7 +61,7 @@
     │   │       └── application           # Spring config files
     │   └── test/
     │       └── java/telegram/bot/         
-    │           ├── service/              # Integration tests
+    │           ├── service/              # Tests
     │           └── util/                 # 
     ├── build.gradle.kts                  # Gradle assembly (Kotlin DSL)
     ├── Makefile                          # Build, run and test commands
