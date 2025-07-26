@@ -21,7 +21,7 @@ java {
 }
 
 application {
-	mainClass = "hexlet.code.AppApplication"
+	mainClass = "telegram.bot.AppApplication"
 }
 
 
