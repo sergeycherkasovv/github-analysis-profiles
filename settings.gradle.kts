@@ -1,1 +1,1 @@
-rootProject.name = "github-profile-analyzer"
+rootProject.name = "app"
