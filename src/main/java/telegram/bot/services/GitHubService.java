@@ -35,7 +35,7 @@ public class GitHubService {
 
     private static final int TIMEOUT = 10;
 
-    public BasicStatistic fetchBasicStatistic(String usernameGitHub) {
+    public Mono<BasicStatistic> fetchBasicStatistic(String usernameGitHub) {
         var query = graphQlReader.reading(BASIC_STATISTIC.getMessage());
 
         Map<String, Object> body = Map.of(
@@ -50,26 +50,28 @@ public class GitHubService {
                 .timeout(Duration.ofSeconds(TIMEOUT))
                 .map(basicStatisticService::create)
                 .doOnError(error -> log.error("GitHub API Exception: {}", error.getMessage()))
-                .onErrorMap(error -> new GitHubAPIException(""))
-                .block();
+                .onErrorMap(error -> new GitHubAPIException("GitHub API Exception"));
     }
 
-    public ContributeStatistic fetchContributeStatistic(String usernameGitHub) {
-        return fetchCreatedAt(usernameGitHub)
-                .flatMapMany(createdAtStr -> {
-                    Instant createdAt = Instant.parse(createdAtStr);
-                    var startYear = createdAt.atZone(ZoneOffset.UTC).getYear();
-                    var endYear = ZonedDateTime.now(ZoneOffset.UTC).getYear();
+    public Mono<ContributeStatistic> fetchContributeStatistic(String usernameGitHub) {
+            return fetchCreatedAt(usernameGitHub)
+                    .flatMapMany(createdAtStr -> {
+                        if (createdAtStr == null || createdAtStr.isBlank()) {
+                            log.error("CreatedAt is empty for user: " + usernameGitHub);
+                            throw new GitHubAPIException("CreatedAt is empty for user: " + usernameGitHub);
+                        }
+                        Instant createdAt = Instant.parse(createdAtStr);
+                        var startYear = createdAt.atZone(ZoneOffset.UTC).getYear();
+                        var endYear = ZonedDateTime.now(ZoneOffset.UTC).getYear();
 
-                    return Flux
-                            .range(startYear, endYear - startYear + 1)
-                            .flatMap(year -> fetchContributionsForYear(usernameGitHub, year));
-                })
-                .reduce(new ContributeStatistic(), (acc, current) -> {
-                    acc.add(current);
-                    return acc;
-                })
-                .block();
+                        return Flux
+                                .range(startYear, endYear - startYear + 1)
+                                .flatMap(year -> fetchContributionsForYear(usernameGitHub, year));
+                    })
+                    .reduce(new ContributeStatistic(), (acc, current) -> {
+                        acc.add(current);
+                        return acc;
+                    });
     }
 
     private Mono<String> fetchCreatedAt(String usernameGitHub) {
@@ -87,7 +89,7 @@ public class GitHubService {
                 .timeout(Duration.ofSeconds(TIMEOUT))
                 .map(json -> json.path("data").path("user").path("createdAt").asText())
                 .doOnError(error -> log.error("GitHub API Exception: {}", error.getMessage()))
-                .onErrorMap(error -> new GitHubAPIException(""));
+                .onErrorMap(error -> new GitHubAPIException("GitHub API Exception"));
     }
 
     private Mono<ContributeStatistic> fetchContributionsForYear(String usernameGitHub, int year) {
@@ -119,6 +121,6 @@ public class GitHubService {
                 .timeout(Duration.ofSeconds(TIMEOUT))
                 .map(contributeService::create)
                 .doOnError(error -> log.error("GitHub API Exception: {}", error.getMessage()))
-                .onErrorMap(error -> new GitHubAPIException(""));
+                .onErrorMap(error -> new GitHubAPIException("GitHub API Exception"));
     }
 }
