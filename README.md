@@ -12,7 +12,9 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=sergeycherkasovv_github-profile-analyzer&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=sergeycherkasovv_github-profile-analyzer)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=sergeycherkasovv_github-profile-analyzer&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=sergeycherkasovv_github-profile-analyzer)
 
-**GitHub Analyze Profiles is a Telegram bot that analyzes the activity of a GitHub profile by _username_. It is built with Spring Boot and uses GraphQL to perform requests to the GitHub API.
+**GitHub Analysis Profiles** is a Telegram bot that analyzes the activity of a GitHub profile by _username_. It is built with Spring Boot and uses GraphQL to perform requests to the GitHub API.
+
+**Bot:** @GithubAnalysisBot
 
 ## Metrics
 - Public Repositories
