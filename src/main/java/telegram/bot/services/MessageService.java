@@ -32,8 +32,8 @@ public class MessageService {
         }
 
         var usernameGitHub = normalizeUsername.normalized(message);
-        var basicStatistic = gitHubService.fetchBasicStatistic(usernameGitHub);
-        var contributesStatistic = gitHubService.fetchContributeStatistic(usernameGitHub);
+        var basicStatistic = gitHubService.fetchBasicStatistic(usernameGitHub).block();
+        var contributesStatistic = gitHubService.fetchContributeStatistic(usernameGitHub).block();
 
         return formatStatisticMessage(usernameGitHub, basicStatistic, contributesStatistic);
 
