@@ -33,11 +33,7 @@
 - **[GitHub GraphQL API](https://docs.github.com/en/graphql)**
 - **[Spring Boot](https://spring.io/projects/spring-boot)**
 - **[WebClient](https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html)**
-- **Testing:**
-    - [JUnit5](https://junit.org/)
-    - [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver)
-    - [Instansio](https://www.instancio.org/articles/using-instancio-with-junit-jupiter/)
-    - [JsonUnit](https://github.com/lukas-krecan/JsonUnit)
+- **[JUnit5](https://junit.org/)**
 - **CI/CD & Tools**:
     - [Gradle](https://gradle.org/)
     - [GitHub Actions](https://github.com/features/actions)
