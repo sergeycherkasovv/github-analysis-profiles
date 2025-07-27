@@ -51,8 +51,10 @@
     │   │   │   ├── exception/            # Custom exceptions
     │   │   │   ├── handler/              # Global Exception Handler
     │   │   │   ├── dto/                  # DTO classes for data transmission
+    │   │   │   ├── repository/           # Repository
     │   │   │   ├── service/              # Business logic
     │   │   │   ├── telegram/             # Telegram bot entry point
+    │   │   │   ├── userCountStatistic/   # Entyty classes 
     │   │   │   ├── util/                 # Utility classes 
     │   │   │   └── AppApplication.java   # Spring Boot application entry point
     │   │   └── resources/
