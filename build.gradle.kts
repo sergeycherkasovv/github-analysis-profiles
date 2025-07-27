@@ -34,10 +34,15 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-devtools")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
+	// GraphQL
 	implementation("com.graphql-java:graphql-java:20.0")
+
+	// DataBase
+	runtimeOnly("com.h2database:h2")
 
 	// Telegram
 	implementation("org.telegram:telegrambots-client:8.3.0")
