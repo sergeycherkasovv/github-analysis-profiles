@@ -4,28 +4,36 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import telegram.bot.dto.basicStatistic.BasicStatistic;
 import telegram.bot.dto.contributeStatistic.ContributeStatistic;
+import telegram.bot.repository.UserRepository;
 import telegram.bot.util.MarkdownV2Util;
 import telegram.bot.util.NormalizeUsername;
 
 import java.util.regex.Pattern;
 
 import static telegram.bot.enums.CommandName.START;
+import static telegram.bot.enums.CommandName.STATS;
 import static telegram.bot.enums.CommandName.THERE_IS_NO_SUCH_COMMAND;
 import static telegram.bot.enums.Message.NO_COMMAND;
 import static telegram.bot.enums.Message.START_MESSAGE;
 import static telegram.bot.enums.Message.STATISTIC_MESSAGE;
+import static telegram.bot.enums.Message.USER_COUNT_STATISTIC;
 
 @Service
 @AllArgsConstructor
 public class MessageService {
     private final MarkdownV2Util markdownV2Util;
     private final NormalizeUsername normalizeUsername;
+    private final UserRepository repository;
 
     public String generateMessage(String message, GitHubService gitHubService) {
         var theIsNoSuchCommand = Pattern.compile(THERE_IS_NO_SUCH_COMMAND.getMessage());
 
         if (START.getMessage().equals(message)) {
             return markdownV2Util.escapeMarkdownV2(START_MESSAGE.getMessage());
+        }
+        if (STATS.getMessage().equals(message)) {
+            var statisticMessage = USER_COUNT_STATISTIC.getMessage() + repository.count();
+            return markdownV2Util.escapeMarkdownV2(statisticMessage);
         }
         if (theIsNoSuchCommand.matcher(message).matches()) {
             return markdownV2Util.escapeMarkdownV2(NO_COMMAND.getMessage());
