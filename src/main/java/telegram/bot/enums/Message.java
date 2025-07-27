@@ -9,6 +9,7 @@ public enum Message {
     NOT_PUBLIC("not public"),
     NO_COMMAND("\uD83E\uDD14 Hmm, I don’t recognize that command. Maybe you wanted to type /start"),
     ERROR_MESSAGE("\uD83D\uDE2E Oops, something went wrong. Please try again."),
+    USER_COUNT_STATISTIC("We are already: "),
     START_MESSAGE("""
                 Hi! 👋
                 I can show you a quick
