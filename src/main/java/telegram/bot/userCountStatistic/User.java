@@ -18,7 +18,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Getter
 @Setter
-@Table(name = "tasks")
+@Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
