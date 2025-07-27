@@ -10,7 +10,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 import telegram.bot.exception.GitHubAPIException;
 import telegram.bot.component.TelegramProperties;
+import telegram.bot.repository.UserRepository;
 import telegram.bot.util.MarkdownV2Util;
+import telegram.bot.userCountStatistic.User;
 
 import static telegram.bot.enums.Message.ERROR_MESSAGE;
 
@@ -20,11 +22,14 @@ public class UpdateService implements LongPollingSingleThreadUpdateConsumer {
     private final MarkdownV2Util markdownV2Util;
     private final MessageService messageService;
     private final GitHubService gitHubService;
+    private final UserRepository repository;
 
     UpdateService(TelegramProperties telegramProperties,
                   MarkdownV2Util markdownV2Util,
                   MessageService messageService,
-                  GitHubService gitHubService) {
+                  GitHubService gitHubService,
+                  UserRepository repository) {
+        this.repository = repository;
         this.gitHubService = gitHubService;
         this.messageService = messageService;
         this.markdownV2Util = markdownV2Util;
@@ -40,6 +45,11 @@ public class UpdateService implements LongPollingSingleThreadUpdateConsumer {
                 var message = updates.getMessage().getText();
 
                 try {
+                    if (!repository.existsByChatId(chatId)) {
+                        var user = new User();
+                        user.setChatId(chatId);
+                        repository.save(user);
+                    }
                     telegramClient.execute(getMessage(chatId, messageService
                                                                 .generateMessage(message, gitHubService)));
                 } catch (GitHubAPIException ex) {
