@@ -14,7 +14,7 @@
 
 **GitHub Analysis Profiles** is a Telegram bot that analyzes the activity of a GitHub profile by _username_. It is built with Spring Boot and uses GraphQL to perform requests to the GitHub API.
 
-**Bot:** @GithubAnalysisBot
+**Bot:** [@GithubAnalysisBot](https://t.me/GithubAnalysisBot)
 
 ## Metrics
 - Public Repositories
